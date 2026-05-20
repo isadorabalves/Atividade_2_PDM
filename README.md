@@ -1,184 +1,124 @@
-# Gestao Financeira - PDM
+# Gestão Financeira — PDM
 
-Projeto composto por uma API REST (Node.js + Prisma + MySQL) e um app mobile (React Native + Expo).
-
----
+Aplicação de gestão financeira pessoal composta por uma **API REST** (Node.js + Prisma + MySQL) e um **app mobile** (React Native + Expo).
 
 ## Estrutura do Projeto
 
-```
 Atividade_2_PDM/
 ├── gestao-financeira-api/   # Backend (API REST)
 └── gestao-financeira/       # App mobile (Expo)
-```
+
+
 
 ---
 
-## Pre-requisitos
+## Pré-requisitos
 
-- [Node.js](https://nodejs.org/) v18+
-- [MySQL](https://dev.mysql.com/downloads/) rodando localmente
-- [Expo Go](https://expo.dev/go) no celular **ou** Android Emulator/iOS Simulator
+- Node.js v18+
+- MySQL Server 8.0 instalado e **em execução**
+- Expo Go no celular **ou** Android Emulator
 
 ---
 
-## 1. API — `gestao-financeira-api`
+## 1. Backend — `gestao-financeira-api`
 
-### 1.1 Instalar dependencias
+### 1.1 Instalar dependências
 
 ```bash
 cd gestao-financeira-api
 npm install
-```
+1.2 Configurar variável de ambiente
 
-### 1.2 Configurar variavel de ambiente
-
-Copie o arquivo de exemplo e preencha com suas credenciais do MySQL:
-
-```bash
 cp .env.example .env
-```
+Edite o .env com suas credenciais do MySQL:
 
-Edite o arquivo `.env`:
 
-```env
 DATABASE_URL="mysql://USUARIO:SENHA@localhost:3306/gestao_financeira"
 PORT=3000
-```
+O banco gestao_financeira será criado automaticamente pelo Prisma.
 
-> Substitua `USUARIO` e `SENHA` pelo usuario e senha do seu MySQL.  
-> O banco `gestao_financeira` sera criado automaticamente pelo Prisma.
+1.3 Criar o banco e as tabelas
 
-### 1.3 Criar o banco e rodar as migrations
+npx prisma db push
+1.4 Popular com categorias padrão
 
-```bash
-npx prisma migrate dev
-```
-
-> Isso cria o banco de dados e todas as tabelas necessarias.
-
-### 1.4 Popular o banco com categorias padrao (seed)
-
-```bash
 npm run prisma:seed
-```
+Insere as categorias: Renda, Alimentação, Casa, Educação, Viagens.
 
-> Insere as categorias: Renda, Alimentacao, Casa, Educacao, Viagens.
+1.5 Iniciar o servidor
 
-### 1.5 Iniciar o servidor
+npm run dev        # desenvolvimento (hot-reload)
+npm start          # produção
+API disponível em: http://localhost:3000
 
-**Desenvolvimento (com hot-reload):**
+1.6 Prisma Studio (opcional)
+Interface visual para inspecionar o banco:
 
-```bash
-npm run dev
-```
 
-**Producao:**
-
-```bash
-npm start
-```
-
-A API ficara disponivel em: `http://localhost:3000`
-
-### 1.6 (Opcional) Abrir o Prisma Studio
-
-Interface visual para visualizar e editar dados no banco:
-
-```bash
 npm run prisma:studio
-```
+Acesse em: http://localhost:5556
 
-Acesse em: `http://localhost:5555`
+2. App Mobile — gestao-financeira
+2.1 Instalar dependências
 
----
-
-## Endpoints da API
-
-| Metodo | Rota | Descricao |
-|--------|------|-----------|
-| GET | `/` | Health check |
-| GET | `/categories` | Listar categorias |
-| POST | `/categories` | Criar categoria |
-| PUT | `/categories/:id` | Atualizar categoria |
-| DELETE | `/categories/:id` | Deletar categoria (nao padrao) |
-| GET | `/transactions` | Listar transacoes |
-| POST | `/transactions` | Criar transacao |
-| PUT | `/transactions/:id` | Atualizar transacao |
-| DELETE | `/transactions/:id` | Deletar transacao |
-
----
-
-## 2. App Mobile — `gestao-financeira`
-
-### 2.1 Instalar dependencias
-
-```bash
 cd gestao-financeira
 npm install
-```
+2.2 Iniciar o app
 
-### 2.2 Iniciar o app
+npx expo start     # geral (QR Code com Expo Go)
+Após iniciar, pressione a para abrir no emulador Android.
 
-**Modo geral (escanear QR Code com Expo Go):**
+2.3 Login no app
+Campo	Valor
+Nome	Qualquer nome (ex: Maria)
+Senha	1234
+Rodando tudo ao mesmo tempo
+Abra dois terminais em paralelo:
 
-```bash
-npm start
-```
 
-**Abrir direto no Android:**
-
-```bash
-npm run android
-```
-
-**Abrir direto no iOS:**
-
-```bash
-npm run ios
-```
-
-**Abrir no navegador (web):**
-
-```bash
-npm run web
-```
-
----
-
-## Rodando o projeto completo
-
-Abra dois terminais e execute em paralelo:
-
-**Terminal 1 — API:**
-
-```bash
+# Terminal 1 — API
 cd gestao-financeira-api
 npm run dev
-```
 
-**Terminal 2 — App:**
-
-```bash
+# Terminal 2 — App
 cd gestao-financeira
-npm start
-```
+npx expo start
+Endpoints da API
+Método	Rota	Descrição
+GET	/	Health check
+GET	/categories	Listar categorias
+POST	/categories	Criar categoria
+PUT	/categories/:id	Atualizar categoria
+DELETE	/categories/:id	Deletar categoria (não padrão)
+GET	/transactions	Listar transações
+POST	/transactions	Criar transação
+PUT	/transactions/:id	Atualizar transação
+DELETE	/transactions/:id	Deletar transação
+A coleção completa do Postman está em gestao-financeira-api/postman/collection.json.
 
----
+Funcionalidades
+Login com validação de senha
+Resumo financeiro com gráfico e filtro por mês/ano
+Histórico de transações com filtros e edição/exclusão por toque longo
+Cadastro de categorias personalizadas
+Dados persistidos em banco de dados MySQL via API REST
+Resumo dos comandos
 
-## Comandos resumidos
-
-```bash
-# --- API ---
+# --- API (primeira vez) ---
 cd gestao-financeira-api
 npm install
-cp .env.example .env          # configurar DATABASE_URL
-npx prisma migrate dev        # criar banco e tabelas
-npm run prisma:seed           # inserir categorias padrao
-npm run dev                   # iniciar servidor
+cp .env.example .env
+npx prisma db push
+npm run prisma:seed
 
-# --- App ---
+# --- API (uso diário) ---
+cd gestao-financeira-api
+npm run dev
+
+# --- App (primeira vez) ---
 cd gestao-financeira
 npm install
-npm start                     # iniciar Expo
-```
+
+# --- App (uso diário) ---
+cd gestao-financeira
+npx expo start
