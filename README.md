@@ -86,7 +86,6 @@ contexts/
 - Express
 - Prisma ORM
 - MySQL
-- JWT
 - Zod
 - Dotenv
 
@@ -283,11 +282,27 @@ Instale:
 npm install
 ```
 
+Configure o `.env` do app (crie o arquivo `gestao-financeira/.env` copiando o `.env.example`):
+
+```env
+# Emulador Android (padrão)
+EXPO_PUBLIC_API_URL=http://10.0.2.2:3000
+
+# Dispositivo físico Android — substitua pelo IP da sua máquina (veja com `ipconfig`)
+# EXPO_PUBLIC_API_URL=http://192.168.x.x:3000
+
+# iOS Simulator ou Web
+# EXPO_PUBLIC_API_URL=http://localhost:3000
+```
+
 Inicie:
 
 ```bash
 npx expo start
 ```
+
+> ⚠️ **Atenção:** ao iniciar, o terminal pode perguntar se deseja atualizar o Expo.
+> **Responda `n` (não)** para manter a versão compatível com o projeto.
 
 ---
 
@@ -415,6 +430,8 @@ npm install
 
 npx expo start
 ```
+
+> ⚠️ Se aparecer pergunta sobre atualizar o Expo, responda **`n`**.
 
 ---
 
